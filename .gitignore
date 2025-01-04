@@ -1,2 +1,4 @@
 /back-rust/target/
 /back-rust/Cargo.lock
+/front-react/node_modules/
+/front-react/package-lock.json
