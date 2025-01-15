@@ -9,6 +9,7 @@ import {
   UserActivityService,
   withAutoRefreshToken
 } from 'keycloak-angular';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const provideKeycloakAngular = () =>
   provideKeycloak({
@@ -40,5 +41,5 @@ export const appConfig: ApplicationConfig = {
   providers: [provideKeycloakAngular(), {
     provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
     useValue: [urlCondition] // <-- Note that multiple conditions might be added.
-  }, provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes)]
+  }, provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes), provideAnimationsAsync()]
 };
