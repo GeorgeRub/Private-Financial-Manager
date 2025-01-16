@@ -16,6 +16,9 @@ export class AuthKeycloakService {
     this.getUserInfo()
   }
 
+  hasRole(roleName: string): boolean {
+    return this.keycloak.hasResourceRole(roleName)
+  }
 
   private getUserInfo() {
     this.keycloak.loadUserInfo().then(value => {
