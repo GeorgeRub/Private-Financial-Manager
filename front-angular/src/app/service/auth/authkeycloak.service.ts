@@ -1,4 +1,4 @@
-import {inject, Injectable, OnInit, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import Keycloak from 'keycloak-js';
 import {UserInfo} from '../../entity/UserInfo';
 
