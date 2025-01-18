@@ -1,17 +1,18 @@
 import {inject, Injectable, signal} from '@angular/core';
 import Keycloak from 'keycloak-js';
 import {UserInfo} from '../../entity/UserInfo';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthKeycloakService {
 
-  protected readonly keycloak = inject(Keycloak);
+  public readonly keycloak = inject(Keycloak);
 
   userInfo = signal<UserInfo>(new UserInfo());
 
-  constructor() {
+  constructor(private readonly http: HttpClient) {
     console.log('AuthKeycloakService constructor');
     this.getUserInfo()
   }
@@ -21,14 +22,23 @@ export class AuthKeycloakService {
   }
 
   private getUserInfo() {
-    this.keycloak.loadUserInfo().then(value => {
-      console.log(value);
-      this.userInfo.set(value);
-    })
+    if (this.keycloak.authenticated) {
+      this.keycloak.loadUserInfo().then(value => {
+        console.log(value);
+        this.userInfo.set(value);
+      })
+      console.log('before google request')
+      this.http.get('www.google.com/').subscribe(config => {
+        console.log('on subscribe')
+        console.log(config);
+      });
+    }
   }
 
   login() {
     this.keycloak.login();
+    this.getUserInfo();
+
   }
 
   logout() {
