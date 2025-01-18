@@ -1,14 +1,18 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {
   AutoRefreshTokenService,
-  createInterceptorCondition, INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition,
+  createInterceptorCondition,
+  INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+  IncludeBearerTokenCondition, includeBearerTokenInterceptor,
   provideKeycloak,
   UserActivityService,
   withAutoRefreshToken
 } from 'keycloak-angular';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
 
 export const provideKeycloakAngular = () =>
   provideKeycloak({
@@ -30,15 +34,23 @@ export const provideKeycloakAngular = () =>
     providers: [AutoRefreshTokenService, UserActivityService]
   });
 
+const regexp: RegExp = /^http:\/\/[^\s/$.?#].[^\s]*/
+
 const urlCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
-  urlPattern: /^(http:\/\/localhost:8080)(\/.*)?$/i,
-  bearerPrefix: 'Bearer'
+  urlPattern: regexp,
+  bearerPrefix: 'Bearer',
 });
 
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideKeycloakAngular(), {
-    provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-    useValue: [urlCondition] // <-- Note that multiple conditions might be added.
-  }, provideZoneChangeDetection({eventCoalescing: true}), provideRouter(routes)]
+  providers: [provideKeycloakAngular(),
+    {
+      provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
+      useValue: [urlCondition]
+    },
+    provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
+    provideZoneChangeDetection({eventCoalescing: true}),
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    importProvidersFrom(HttpClientModule)],
 };
