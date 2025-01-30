@@ -1,6 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {AuthKeycloakService} from '../service/auth/authkeycloak.service';
 import {HttpClient} from '@angular/common/http';
+import {ShortAccount} from '../entity/account/ShortAccount';
 
 @Component({
   selector: 'app-index',
@@ -13,8 +14,17 @@ export class IndexComponent implements OnInit {
 
   protected keycloakService: AuthKeycloakService = inject(AuthKeycloakService)
 
-  constructor(private http: HttpClient) {
+  shortAccountsList = signal<ShortAccount[]>([])
+
+  constructor(private readonly http: HttpClient) {
+    let shortAcc =  new ShortAccount()
+    shortAcc.id = 1
+    shortAcc.accountName = 'test'
+    shortAcc.currency = 'EUR'
+    shortAcc.amount = 100
+    this.shortAccountsList.set([shortAcc])
   }
+
 
   ngOnInit(): void {
     console.log('IndexComponent ngOnInit');

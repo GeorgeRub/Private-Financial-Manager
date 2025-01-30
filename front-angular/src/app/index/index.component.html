@@ -1,6 +1,42 @@
-<div class="">
-  <p>index works!</p>
-<br/>
-  {{keycloakService.keycloak.token}}
+<div style="width: 98%; margin-left: auto; margin-right: auto;">
+  <div class="">
+    <p>index works!</p>
+    <br/>
+    <div class="row">
+      <div class="col-5">
+        <button class="btn btn-link">Add</button>
+
+        @if (shortAccountsList().length > 0) {
+
+          <table class="table" style="width: 100%;">
+            <thead  class="table-light">
+            <tr>
+              <th>Name</th>
+              <th style="width: max-content;">Currency</th>
+              <th style="width: max-content;">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+              @for (account of shortAccountsList(); track account.id) {
+                <tr>
+                  <td>{{ account.accountName }}</td>
+                  <td>{{ account.currency }}</td>
+                  <td>{{ account.amount }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+        } @else {
+          <h5>No accounts.</h5>
+        }
+
+      </div>
+      <div class="col-7" style="text-align: center">
+        <h5>No records.</h5>
+      </div>
+    </div>
+  </div>
 </div>
+
 
