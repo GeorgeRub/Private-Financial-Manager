@@ -2,7 +2,7 @@ import {inject, Injectable, signal} from '@angular/core';
 import {ShortAccount} from '../../entity/account/ShortAccount';
 import {HttpClient} from '@angular/common/http';
 import {Currency} from '../../entity/account/Currency';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {AuthKeycloakService} from '../auth/authkeycloak.service';
 import {Observable} from 'rxjs';
 import {AccountNew} from '../../entity/account/AccountNew';

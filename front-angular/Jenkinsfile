@@ -9,7 +9,7 @@ pipeline {
           // Ensure Rust is installed and available in the PATH
           sh '''
          rm -rf Private-Financial-Manager ;
-
+         whoami
 
                             '''
         }
@@ -18,28 +18,64 @@ pipeline {
     }
 
 
-    stage('Check Rust') {
+    stage('Get the PFM project from Github') {
       steps {
         script {
           // Ensure Rust is installed and available in the PATH
           sh '''
           git clone https://github.com/GeorgeRub/Private-Financial-Manager.git
-          ls
           cd Private-Financial-Manager
-          cd front-angular
-          ng install
-          ng build
-          ls
           '''
         }
       }
 
     }
 
-    stage('Cleaning after') {
+    stage('Build the angular frontend project') {
       steps {
         script {
           // Ensure Rust is installed and available in the PATH
+          sh '''
+          cd Private-Financial-Manager/front-angular
+          npm install
+          ng build
+          '''
+        }
+      }
+    }
+
+    stage('Create Docker image') {
+      steps {
+        script {
+          // Ensure Rust is installed and available in the PATH
+          sh '''
+          echo "Creating a docker image..."
+          cd Private-Financial-Manager/front-angular
+          docker build -t rublevgeorgij/angular-pfm:v0.${BUILD_NUMBER} .
+          docker build -t rublevgeorgij/angular-pfm:latest .
+          '''
+        }
+      }
+    }
+
+    stage('Push Docker image') {
+      steps {
+        script{
+          sh '''
+                        echo "Pushing a docker image..."
+                        docker login -u rublevgeorgij -p dckr_pat_NCO665FWIQQFxEuX-GkmqhBinZo
+                        docker push rublevgeorgij/angular-pfm:v0.${BUILD_NUMBER}
+                        docker push rublevgeorgij/angular-pfm:latest
+
+                        '''
+        }
+
+      }
+    }
+
+    stage('Cleaning after') {
+      steps {
+        script {
           sh '''
                                 echo "Cleaning..."
                                 rm -r Private-Financial-Manager

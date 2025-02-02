@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pfm
+  name: pfm-angular
+  labels:
+    role: pfm-angular
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pfm-angular
+  template:
+    metadata:
+      labels:
+        app: pfm-angular
+    spec:
+      containers:
+        - name: pfm-angular
+          image: rublevgeorgij/angular-pfm:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: pfm-pod
+              containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+
