@@ -1,0 +1,52 @@
+pipeline {
+  agent {
+    label 'local-agent' // Specify the label of the agent to use
+  }
+  stages {
+    stage('Cleaning before') {
+      steps{
+        script {
+          // Ensure Rust is installed and available in the PATH
+          sh '''
+         rm -rf Private-Financial-Manager ;
+
+
+                            '''
+        }
+      }
+
+    }
+
+
+    stage('Check Rust') {
+      steps {
+        script {
+          // Ensure Rust is installed and available in the PATH
+          sh '''
+          git clone https://github.com/GeorgeRub/Private-Financial-Manager.git
+          ls
+          cd Private-Financial-Manager
+          cd front-angular
+          ng install
+          ng build
+          ls
+          '''
+        }
+      }
+
+    }
+
+    stage('Cleaning after') {
+      steps {
+        script {
+          // Ensure Rust is installed and available in the PATH
+          sh '''
+                                echo "Cleaning..."
+                                rm -r Private-Financial-Manager
+                            '''
+        }
+      }
+
+    }
+  }
+}
