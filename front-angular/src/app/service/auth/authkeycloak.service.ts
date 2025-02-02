@@ -13,7 +13,6 @@ export class AuthKeycloakService {
   userInfo = signal<UserInfo>(new UserInfo());
 
   constructor(private readonly http: HttpClient) {
-    console.log('AuthKeycloakService constructor');
     this.getUserInfo()
   }
 
@@ -21,17 +20,16 @@ export class AuthKeycloakService {
     return this.keycloak.hasResourceRole(roleName)
   }
 
+  hasRoles(roles: string[]): boolean {
+    return roles.some(role => this.keycloak.hasResourceRole(role))
+  }
+
+
   private getUserInfo() {
     if (this.keycloak.authenticated) {
       this.keycloak.loadUserInfo().then(value => {
-        console.log(value);
         this.userInfo.set(value);
       })
-      console.log('before google request')
-      this.http.get('www.google.com/').subscribe(config => {
-        console.log('on subscribe')
-        console.log(config);
-      });
     }
   }
 

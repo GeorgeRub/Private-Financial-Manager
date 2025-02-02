@@ -1,0 +1,55 @@
+<h4 style="margin-left: auto; margin-right: auto;">Create New Account</h4>
+<mat-dialog-content >
+  <form [formGroup]="newAccountForm">
+    <div>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [formControl]="newAccountForm.controls['name']"/>
+      </mat-form-field>
+      @if (getControllerByName('name')?.errors?.['maxlength']) {
+        <div>Max length 25</div>
+      }
+      @if (getControllerByName('name')?.errors?.['required']) {
+        <div>Name is required</div>
+      }
+    </div>
+    <div>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Short Name</mat-label>
+        <input matInput type="text" [formControl]="newAccountForm.controls['shortName']"/>
+      </mat-form-field>
+      @if (getControllerByName('shortName')?.errors?.['maxlength']) {
+        <div>Max length 15</div>
+      }
+    </div>
+    <div>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Description</mat-label>
+        <input matInput type="text" [formControl]="newAccountForm.controls['description']"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Currency</mat-label>
+        <mat-select [formControl]="newAccountForm.controls['currency']">
+          @for (currency of accountService.currenciesLst(); track currency.id) {
+            <mat-option value="{{ currency.shortCurrencyName }}">{{ currency.currencyName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (currencyValid) {
+        <div>Please select currency</div>
+      }
+    </div>
+    <div>
+      <mat-form-field appearance="fill" style="width: 100%">
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" [formControl]="newAccountForm.controls['amount']"/>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="saveNewAccount()">Create</button>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+</mat-dialog-actions>

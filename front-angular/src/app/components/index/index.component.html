@@ -1,0 +1,26 @@
+<div style="width: 98%; margin-left: auto; margin-right: auto;">
+  <div class="">
+    <div class="row" *ngIf="!keycloakService.isAuthenticated()">
+      <p>
+        Login
+      </p>
+    </div>
+    <div class="row" *ngIf="keycloakService.isAuthenticated()">
+      <div class="col-5">
+        <button class="btn btn-link" (click)="addNewAccount()" >Add</button>
+
+        @if (accountService.shortAccountsList().length > 0) {
+          <account-short-table/>
+        } @else {
+          <h5>No accounts.</h5>
+        }
+
+      </div>
+      <div class="col-7" style="text-align: center">
+        <h5>No records.</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+
