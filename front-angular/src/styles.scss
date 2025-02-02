@@ -1,4 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap');
+
+$header-headline-color: rgba(68, 68, 68, 0.79);
+$background-color: white;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  //font-family: 'Roboto Serif', serif;
+  font-family: 'Crimson Text', serif;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  @include mat.table-overrides((
+    background-color: $background-color,
+    header-headline-color: $header-headline-color
+  ));
+  @include mat.form-field-overrides((
+    //filled-caret-color: orange,
+    //filled-container-background-color: red,
+  ));
+}
