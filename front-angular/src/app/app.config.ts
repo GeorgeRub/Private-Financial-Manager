@@ -17,7 +17,7 @@ import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/co
 export const provideKeycloakAngular = () =>
   provideKeycloak({
     config: {
-      url: 'http://local.keycloak.com',
+      url: 'https://local.keycloak.com',
       realm: 'private-financial-manager',
       clientId: 'pfm'
     },
