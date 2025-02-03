@@ -3,9 +3,9 @@ export const environment = {
   api_version: "/api/v1/",
   production: false,
   keycloak: {
-    authority: 'http://local.keycloak.com',
-    redirectUri: 'http://localhost:4200',
-    postLogoutRedirectUri: 'http://localhost:4200/logout',
+    authority: 'https://local.keycloak.com',
+    redirectUri: 'https://local.pfm.com',
+    postLogoutRedirectUri: 'https://local.pfm.com/logout',
     realm: 'private-financial-manager',
     clientId: 'pfm',
   },
